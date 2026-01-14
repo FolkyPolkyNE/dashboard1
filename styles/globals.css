@@ -47,3 +47,13 @@ body{
 .map-controls button.active{background:var(--accent);color:#06263b}
 .map-controls button:hover{filter:brightness(1.05)}
 
+/* Situation monitoring feed styles */
+.feed-box{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:12px;border-radius:8px;min-height:180px}
+.feed-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.feed-list{max-height:240px;overflow:auto}
+.feed-item{padding:8px;border-bottom:1px solid rgba(255,255,255,0.03)}
+.feed-meta{font-size:12px;color:var(--muted);margin-bottom:6px}
+.feed-text{font-size:14px}
+.muted{color:var(--muted)}
+.analysis-panel{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:12px;border-radius:8px}
+
