@@ -40,3 +40,10 @@ body{
 }
 
 .leaflet-container{background:transparent}
+
+/* Map controls overlay */
+.map-controls{position:absolute;top:12px;left:12px;z-index:4000;display:flex;gap:8px;flex-wrap:wrap}
+.map-controls button{background:rgba(16,24,32,0.9);color:#e6eef8;border:1px solid rgba(255,255,255,0.04);padding:8px 10px;border-radius:8px;cursor:pointer}
+.map-controls button.active{background:var(--accent);color:#06263b}
+.map-controls button:hover{filter:brightness(1.05)}
+
