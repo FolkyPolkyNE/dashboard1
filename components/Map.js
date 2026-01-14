@@ -1,4 +1,4 @@
-import { MapContainer, TileLayer, Marker, Popup, useMap, Rectangle } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker, useMap, Rectangle, Tooltip } from 'react-leaflet'
 import L from 'leaflet'
 import { useEffect, useState, useRef } from 'react'
 
@@ -21,6 +21,9 @@ function MapController({mode, setMode, markers, setMarkers, rectangles, setRecta
 
     function onMouseDown(e){
       if(mode !== 'draw') return
+      // disable map dragging while drawing to prevent panning
+      if(map.dragging) map.dragging.disable()
+      if(map.doubleClickZoom) map.doubleClickZoom.disable()
       startRef.current = e.latlng
       drawingRef.current = L.rectangle([e.latlng, e.latlng], {color:'#60a5fa', weight:2}).addTo(map)
     }
@@ -33,11 +36,17 @@ function MapController({mode, setMode, markers, setMarkers, rectangles, setRecta
     function onMouseUp(e){
       if(mode !== 'draw' || !drawingRef.current || !startRef.current) return
       const bounds = drawingRef.current.getBounds()
+      const sw = bounds.getSouthWest()
+      const ne = bounds.getNorthEast()
       const id = Date.now()+Math.random()
-      setRectangles(prev=>[...prev, {id, bounds: bounds.toBBoxString()}])
+      const label = window.prompt('Label for box', '') || ''
+      setRectangles(prev=>[...prev, {id, bounds:[[sw.lat, sw.lng],[ne.lat, ne.lng]], label}])
       map.removeLayer(drawingRef.current)
       drawingRef.current = null
       startRef.current = null
+      // re-enable map interactions
+      if(map.dragging) map.dragging.enable()
+      if(map.doubleClickZoom) map.doubleClickZoom.enable()
     }
 
     map.on('click', onMapClick)
@@ -96,20 +105,16 @@ export default function Map(){
 
         {markers.map(m=> (
           <Marker key={m.id} position={m.position} eventHandlers={{click:(ev)=>handleMarkerClick(ev,m)}}>
-            {m.label ? <Popup>{m.label}</Popup> : null}
+            {m.label ? <Tooltip permanent direction="top" offset={[0,-8]}>{m.label}</Tooltip> : null}
           </Marker>
         ))}
 
         {rectangles.map(r=>{
-          // bounds stored as bbox string "southWest_lng,southWest_lat,eastNorth_lng,eastNorth_lat"
-          const parts = r.bounds.split(',').map(Number)
-          const south = parts[1]
-          const west = parts[0]
-          const north = parts[3]
-          const east = parts[2]
-          const bounds = [[south, west],[north, east]]
+          const bounds = r.bounds
           return (
-            <Rectangle key={r.id} bounds={bounds} pathOptions={{color:'#60a5fa', weight:2}} eventHandlers={{click:()=>{ if(mode==='remove') removeRectangle(r.id) }}} />
+            <Rectangle key={r.id} bounds={bounds} pathOptions={{color:'#60a5fa', weight:2}} eventHandlers={{click:()=>{ if(mode==='remove') removeRectangle(r.id); else if(mode==='label'){ const txt = window.prompt('Label for box', r.label||''); if(txt!==null){ setRectangles(prev=>prev.map(rr=> rr.id===r.id ? {...rr, label: txt} : rr)) } } }}}>
+              {r.label ? <Tooltip permanent direction="top" offset={[0,-8]}>{r.label}</Tooltip> : null}
+            </Rectangle>
           )
         })}
       </MapContainer>
