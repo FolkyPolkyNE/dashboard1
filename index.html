@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Admin Dashboard — Dark</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-sA+4g4b4Y1k6tY5gX2kGxQy1bQfK3qv3fYJXv3YkP6s=" crossorigin=""/>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="brand">DarkAdmin</div>
+        <nav>
+          <a href="#" class="nav-link active" data-section="dashboard">Dashboard</a>
+          <a href="#" class="nav-link" data-section="accounts">Accounts</a>
+          <a href="#" class="nav-link" data-section="situations">Situation Monitoring</a>
+          <a href="#" class="nav-link" data-section="research">Research & Analysis</a>
+          <a href="#" class="nav-link" data-section="ops">Current Ops</a>
+          <a href="#" class="nav-link" data-section="content">Content</a>
+        </nav>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <h1>Dashboard</h1>
+        </header>
+
+        <section id="dashboard" class="page active">
+          <div class="stats">
+            <div class="stat">
+              <div class="label">Active Accounts</div>
+              <div id="activeAccounts" class="value">0</div>
+            </div>
+            <div class="stat">
+              <div class="label">Active Situations</div>
+              <div id="activeSituations" class="value">0</div>
+            </div>
+            <div class="stat">
+              <div class="label">Current R&amp;A</div>
+              <div id="currentRA" class="value">0</div>
+            </div>
+            <div class="stat">
+              <div class="label">Current Ops</div>
+              <div id="currentOps" class="value">0</div>
+            </div>
+          </div>
+
+          <div id="map" class="map"></div>
+        </section>
+
+        <section id="accounts" class="page">
+          <h2>Accounts</h2>
+          <p>Placeholder for account management UI.</p>
+        </section>
+
+        <section id="situations" class="page">
+          <h2>Situation Monitoring</h2>
+          <p>Placeholder for situation monitoring tools.</p>
+        </section>
+
+        <section id="research" class="page">
+          <h2>Research &amp; Analysis</h2>
+          <p>Placeholder for R&amp;A tools and reports.</p>
+        </section>
+
+        <section id="ops" class="page">
+          <h2>Current Ops</h2>
+          <p>Placeholder for Current Ops dashboards.</p>
+        </section>
+
+        <section id="content" class="page">
+          <h2>Content</h2>
+          <p>Placeholder for content management.</p>
+        </section>
+      </main>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-o9N1j7k8fKQ6v1d5xg0sRm5KQ4z2XmQ2Y+7r9e+6H/0=" crossorigin=""></script>
+    <script src="app.js"></script>
+  </body>
+</html>
