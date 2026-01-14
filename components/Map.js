@@ -69,10 +69,28 @@ export default function Map(){
   const [mode, setMode] = useState('none')
   const [markers, setMarkers] = useState([])
   const [rectangles, setRectangles] = useState([])
+  const mountedRef = useRef(false)
+  // storage helper
+  const storage = require('../lib/storage')
 
   useEffect(()=>{
-    // initialize empty view or add seeded data if desired
+    if(mountedRef.current) return
+    mountedRef.current = true
+    const saved = storage.loadMarkers()
+    if(saved && Array.isArray(saved)) setMarkers(saved)
+    const rects = storage.loadRectangles()
+    if(rects && Array.isArray(rects)) setRectangles(rects)
   }, [])
+
+  // save whenever markers/rectangles change
+  useEffect(()=>{
+    if(!mountedRef.current) return
+    storage.saveMarkers(markers)
+  }, [markers])
+  useEffect(()=>{
+    if(!mountedRef.current) return
+    storage.saveRectangles(rectangles)
+  }, [rectangles])
 
   function handleMarkerClick(ev, marker){
     if(mode === 'remove'){
